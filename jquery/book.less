@@ -1,0 +1,221 @@
+.NO_SELECT() {
+	-webkit-touch-callout: none;
+	  -webkit-user-select: none;
+	     -moz-user-select: none;
+		  -ms-user-select: none;
+			  user-select: none;
+}
+
+.BACKGROUND_SIZE(@style) {
+	-webkit-background-size: @style;
+	   -moz-background-size: @style;
+		-ms-background-size: @style;
+	        background-size: @style;
+}
+
+
+// Set element to transition CSS properties over a period of time.
+// Default is to transition all properties over 1/2 second.
+.TRANSITION(@properties:all; @duration:.5s; @delay:0s) {
+	-webkit-transition+:@properties @duration @delay;
+	   -moz-transition+:@properties @duration @delay;
+		-ms-transition+:@properties @duration @delay;
+			transition+:@properties @duration @delay;
+}
+
+// Set which properties should animate on change.  Default = all properties.
+.TRANSITION_TRANSFORM(@duration:.5s; @delay:0s) {
+	-webkit-transition+:-webkit-transform @duration @delay;
+	   -moz-transition+:-moz-transform @duration @delay;
+		-ms-transition+:-ms-transform @duration @delay;
+			transition+:transform @duration @delay;
+}
+
+.BACKFACE(@value) {
+	-webkit-backface-visibility: @value;
+	   -moz-backface-visibility: @value;
+		-ms-backface-visibility: @value;
+			backface-visibility: @value;
+}
+
+.PRESERVE_3D() {
+	-webkit-transform-style: preserve-3d;
+	   -moz-transform-style: preserve-3d;
+		-ms-transform-style: preserve-3d;
+			transform-style: preserve-3d;
+}
+
+.TRANSFORM_ORIGIN(@properties) {
+	-webkit-transform-origin: @properties;
+	   -moz-transform-origin: @properties;
+		-ms-transform-origin: @properties;
+			transform-origin: @properties;
+}
+
+
+.TRANSFORM(@properties) {
+	-webkit-transform+: @properties;
+	   -moz-transform+: @properties;
+		-ms-transform+: @properties;
+			transform+: @properties;
+}
+
+
+.PERSPECTIVE(@amount) {
+	-webkit-perspective: @amount;
+	   -moz-perspective: @amount;
+		-ms-perspective: @amount;
+			perspective: @amount;
+}
+
+.GRADIENT(@params) {
+	background-image: linear-gradient(@params);
+	background-image: -moz-linear-gradient(@params);
+	background-image: -webkit-linear-gradient(@params);
+}
+
+//button {
+//	font-size:2em;
+//	border-radius:.5em;
+//}
+
+book {
+	position:absolute;
+	display:block;
+	left:400px; top:50px;
+	width:340px; height:440px;
+	.PERSPECTIVE(2000px);
+	perspective-origin:left center;
+}
+
+// A single page of paper, which has 2 enclosed <side>s.
+page {
+	position:absolute;
+//	display:none;
+	left:0; top:0;
+	width:340px; height:440px;
+	.PRESERVE_3D();
+	.TRANSFORM_ORIGIN(left top 0px);
+	.TRANSFORM(rotateY(0deg));
+	.TRANSITION_TRANSFORM(.5s);
+	.TRANSITION(z-index;.1s;.1s);
+}
+
+side {
+	display:block;
+	position:absolute;
+	left:0;top:0;
+	width:340px; height:440px;
+	.BACKGROUND_SIZE(100% 100%);
+	.BACKFACE(hidden);
+	.NO_SELECT();
+}
+
+@ACTIVE_SHADOW		: 0 2px 5px rgba(0, 0, 0, 0.25);
+@FRONT_COVER_SHADOW : 2px 2px 8px rgba(0, 0, 0, 0.25);
+@BACK_COVER_SHADOW	: -2px 2px 8px rgba(0, 0, 0, 0.25);
+page.active {
+	box-shadow:	@ACTIVE_SHADOW;
+}
+page.frontCover {
+	display:block !important;
+	box-shadow:	@FRONT_COVER_SHADOW;
+	&.active {
+		box-shadow:	@FRONT_COVER_SHADOW, @ACTIVE_SHADOW;
+	}
+}
+page.backCover {
+	display:block !important;
+	box-shadow:	@BACK_COVER_SHADOW;
+	&.active {
+		box-shadow:	@BACK_COVER_SHADOW, @ACTIVE_SHADOW;
+	}
+}
+
+
+// center shadow for each side
+side:after {
+	position:absolute;
+	top:0;
+	width:5%;
+	height:100%;
+	content:' ';
+}
+
+side.front {
+	z-index:2;
+	&:after {
+		left:0px;
+		.GRADIENT(left, rgba(0,0,0,0.1) 0%,rgba(0,0,0,0) 100%;);
+	}
+}
+
+side.back {
+	.TRANSFORM(rotateY(180deg));
+	&:after {
+		right:0px;
+		.GRADIENT(right, rgba(0,0,0,0.1) 0%,rgba(0,0,0,0) 100%;);
+	}
+}
+
+// center shadow for each side
+side:after {
+	position:absolute;
+	top:0;
+	width:5%;
+	height:100%;
+	content:' ';
+}
+
+side.front {
+	z-index:2;
+	&:after {
+		left:0px;
+		.GRADIENT(left, rgba(0,0,0,0.1) 0%,rgba(0,0,0,0) 100%;);
+	}
+}
+
+side.back {
+	.TRANSFORM(rotateY(180deg));
+	&:after {
+		right:0px;
+		.GRADIENT(right, rgba(0,0,0,0.1) 0%,rgba(0,0,0,0) 100%;);
+	}
+}
+
+
+body.flip01 {	.pp1 {	.TRANSFORM(rotateY(-181deg)); } 						}
+body.flip02 {	.pp2 {	.TRANSFORM(rotateY(-181deg)); } .pp2 {z-index:102;}	}
+body.flip03 {	.pp3 {	.TRANSFORM(rotateY(-181deg)); } .pp3 {z-index:103;}	}
+body.flip04 {	.pp4 {	.TRANSFORM(rotateY(-181deg)); } .pp4 {z-index:104;}	}
+body.flip05 {	.pp5 {	.TRANSFORM(rotateY(-181deg)); }	.pp5 {z-index:105;}	}
+body.flip06 {	.pp6 {	.TRANSFORM(rotateY(-181deg)); }	.pp6 {z-index:106;}	}
+body.flip07 {	.pp7 {	.TRANSFORM(rotateY(-181deg)); }	.pp7 {z-index:107;}	}
+body.flip08 {	.pp8 {	.TRANSFORM(rotateY(-181deg)); }	.pp8 {z-index:108;}	}
+body.flip09 {	.pp9 {	.TRANSFORM(rotateY(-181deg)); }	.pp9 {z-index:109;}	}
+body.flip10 {	.pp10 {	.TRANSFORM(rotateY(-181deg)); }	.pp10 {z-index:110;}	}
+
+
+body.fan1 {
+	.pp1 {	.TRANSFORM(rotateY(-180deg)); z-index:1; }
+	.pp2 {	.TRANSFORM(rotateY(-150deg)); z-index:2; }
+	.pp3 {	.TRANSFORM(rotateY(-120deg)); }
+
+	.pp4 {	.TRANSFORM(rotateY(-60deg)); }
+	.pp5 {	.TRANSFORM(rotateY(-30deg)); }
+	.pp6 {	.TRANSFORM(rotateY(0deg));   }
+}
+
+
+body.fan2 {
+	.pp1 {	.TRANSFORM(rotateY(-180deg)); z-index:1; }
+	.pp2 {	.TRANSFORM(rotateY(-165deg)); z-index:2; }
+	.pp3 {	.TRANSFORM(rotateY(-150deg)); z-index:3; }
+	.pp4 {	.TRANSFORM(rotateY(-135deg));  }
+
+	.pp5 {	.TRANSFORM(rotateY(-45deg));   }
+	.pp6 {	.TRANSFORM(rotateY(-30deg));   }
+	.pp7 {	.TRANSFORM(rotateY(-15deg));   }
+	.pp8 {	.TRANSFORM(rotateY(0deg));     }
+}
+
