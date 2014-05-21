@@ -42,7 +42,7 @@ define(function(require, exports, module) {
 		this.positioner = new StateModifier({
 			origin  : [0, 0],
 			align	: [0, 0],
-			size	: [1320, 880]
+			size	: [660, 440]
 		});
 		this.mainNode = this.add(this.positioner);
 
@@ -54,11 +54,13 @@ define(function(require, exports, module) {
 		for (var pageNum = 0, side = 1; side <= this.options.sideCount; ) {
 			var frontSideName = (side++).pad(sideDigits);
 			var backSideName = (side++).pad(sideDigits);
+			var showShadow = (pageNum === 0 || pageNum === (this.pageCount-1));
 			var pageOptions = {
 				pageNumber	: pageNum++,
 				frontUrl 	: "../projects/" + this.options.project+ "/" + frontSideName + ".jpg",
 				backUrl  	: "../projects/" + this.options.project+ "/" + backSideName + ".jpg",
-				zIndex		: (this.pageCount - pageNum)
+				zIndex		: (this.pageCount - pageNum),
+				showShadow	: showShadow
 			}
 			var page = new PageView(pageOptions);
 			this.pages.push(page);
@@ -73,15 +75,19 @@ define(function(require, exports, module) {
 		if (pageNum >= this.pageCount) pageNum = this.pageCount-1;
 
 		var currentPage = this.currentPage;
-		if (pageNum < currentPage) {
-			for (var p = currentPage, i = 0; p < pageNum; p++, i++) {
-				this.pages[p].flipForward();
+console.info(pageNum, currentPage);
+		if (pageNum > currentPage) {
+			for (var p = currentPage, i = 0; p <= pageNum; p++, i++) {
+console.warn("forward", p, ":", this.pages[p]);
+				this.pages[p].flipForward(i*20);
 			}
 		} else {
-			for (var p = currentPage, i = 0; p < pageNum; p++, i++) {
-				this.pages[p].flipBack();
+			for (var p = currentPage, i = 0; p >= pageNum; p--, i++) {
+console.warn("back", p, ":", this.pages[p]);
+				this.pages[p].flipBack(i*20);
 			}
 		}
+		this.currentPage = pageNum;
 	};
 
 	PVP.showNextPage = function() {

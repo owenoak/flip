@@ -11,8 +11,6 @@ define(function(require, exports, module) {
     var ImageSurface = require('famous/surfaces/ImageSurface');
     var ContainerSurface = require('famous/surfaces/ContainerSurface');
 
-    var SlideshowView = require('views/SlideshowView');
-
     // Constructor function for our AppView class
     function AppView() {
         // Applies View's constructor function to AppView class

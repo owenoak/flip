@@ -5,16 +5,21 @@
 define(function(require, exports, module) {
 	var View = require('famous/core/View');
 	var Surface = require('famous/core/Surface');
+	var Modifier = require('famous/core/Modifier');
 	var Transform = require('famous/core/Transform');
 	var StateModifier = require('famous/modifiers/StateModifier');
 	var ImageSurface = require('famous/surfaces/ImageSurface');
 	var ContainerSurface = require('famous/surfaces/ContainerSurface');
+	var Transitionable = require("famous/transitions/Transitionable");
 
 	// native extensions
 	var native = require('native');
 
 	function PageView() {
 		View.apply(this, arguments);
+
+		this._angle = new Transitionable((-360).degrees());
+
 		this._initViews();
 	}
 
@@ -36,6 +41,7 @@ define(function(require, exports, module) {
 		// NOTE: If we go from 0 -> -180, famo.us will flip the page BEHIND.new
 		//		 The solution is to go from -360 to -540, so it flips ABOVE.
 		flipStartAngle	: (-360).degrees(),
+		flipSwitchAngle	: (-450).degrees(),
 		flipEndAngle	: (-540).degrees()
 
 	};
@@ -47,18 +53,17 @@ define(function(require, exports, module) {
 		if (this.options.frontUrl == null) throw "You must provide `options.frontUrl`.";
 		if (this.options.backUrl == null) throw "You must provide `options.backUrl`.";
 
-
 		this.front = new ImageSurface({
 			content:this.options.frontUrl,
 			properties : {
-				boxShadow : "2px 2px 8px rgba(0, 0, 0, 0.25)"
+				boxShadow 	: (this.options.showShadow ? "2px 2px 8px rgba(0, 0, 0, 0.25)" : "none")
 			}
 		});
 
 		this.back  = new ImageSurface({
 			content : this.options.backUrl,
 			properties : {
-				boxShadow : "-2px 2px 8px rgba(0, 0, 0, 0.25)"
+				boxShadow 	: (this.options.showShadow ? "2px 2px 8px rgba(0, 0, 0, 0.25)" : "none")
 			}
 		});
 
@@ -69,15 +74,27 @@ define(function(require, exports, module) {
 			transform : Transform.thenMove(Transform.rotateY((-180).degrees()), [0, 0, -1])
 		});
 
-console.info(this.options.pageNumber, this.options.zIndex);
 		// our `flipper` is what rotates us around our axis
-		this.flipper = new StateModifier({
+		// NOTE: it's a "Modifier" so we can give it functions to dynamically evaluate values
+		this.flipper = new Modifier({
 			origin  : [0, 0],
 			align	: [0.5, 0],
-			size	: [660, 880],
-			transfrom : Transform.thenMove(Transform.rotateY(this.options.flipStartAngle),
-										   [0,0,this.options.zIndex*10])
+			size	: [330, 440],
+
+			// dynamically update the transform
+			transform : function() {
+				// angle is changed in `_flip()`
+				var angle = this._angle.get();
+
+				// Update the zIndex dynamically as well:
+				//	if we're beyond the `switchAngle`, we're on the left and we want a low zIndex
+				//	so other things will be above us.
+				var zIndex = (angle < this.options.flipSwitchAngle ? this.options.pageNumber : this.options.zIndex);
+
+				return Transform.thenMove(Transform.rotateY(angle),  [0, 0, zIndex])
+			}.bind(this)
 		});
+
 		this.mainNode = this.add(this.flipper);
 
 		// add front/back to our flipper
@@ -96,21 +113,27 @@ console.info(this.options.pageNumber, this.options.zIndex);
 		else					this.flipForward();
 	}
 
-	PVP.flipForward = function() {
-		this._flip(this.options.flipEndAngle, true);
+	PVP.flipForward = function(delay) {
+		this._flip(this.options.flipEndAngle, true, delay);
 	}
 
-	PVP.flipBack = function() {
-		this._flip(this.options.flipStartAngle, false);
+	PVP.flipBack = function(delay) {
+		this._flip(this.options.flipStartAngle, false, delay);
 	}
 
-	PVP._flip = function(angle, isFlipped) {
-		this.flipper.setTransform(Transform.rotateY(angle),
-								 { duration: this.options.flipDuration, curve: this.options.flipCurve }
-								);
+	PVP._flip = function(angle, isFlipped, delay) {
+		if (delay) {
+			setTimeout(this._flipNow.bind(this, angle, isFlipped), delay);
+		} else {
+			this._flipNow(angle, isFlipped);
+		}
+	}
+
+	PVP._flipNow = function(angle, isFlipped) {
+		// by updating the angle, on the next tick the page will start flipping
+		this._angle.set( angle, { duration: this.options.flipDuration, curve: this.options.flipCurve });
 		this.isFlipped = isFlipped;
 	}
-
 
 	PVP.onFrontClick = function() {
 		this.flipForward();

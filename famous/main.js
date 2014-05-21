@@ -21,8 +21,9 @@ define(function(require, exports, module) {
 	var BookView  = require('BookView');
 	var book = window.book = new BookView({
 		project 	: "bebe/May2014",
-		sideCount	: 10
+		sideCount	: 50
 	});
+	console.warn(book.sideCount);
 	mainContext.add(book);
 
 });
