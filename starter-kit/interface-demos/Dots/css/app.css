@@ -1,0 +1,27 @@
+@import url(http://fonts.googleapis.com/css?family=Josefin+Sans:300,400);
+
+html,body {
+    font-family:  'Josefin Sans',  sans-serif, 'Open Sans Condensed', 'Muli';
+    font-weight: 400;
+    font-size:16pt;
+    background-color: #fff;
+    color: #fff;
+}
+
+.cool-svg{
+/** To edit this background, follow this link:
+http://svgeneration.com/generate/Bubble-Wrap?height=20&width=20&background=51086b&ring=8c26d1&ring-transparency=0.5&ring-width=0.85&
+*/
+background-color: #51086b;background-image:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScyMCcgaGVpZ2h0PScyMCc+Cgk8ZWxsaXBzZSBjeD0nNTAlJyBjeT0nNTAlJyByeD0nNTAlJyByeT0nNTAlJyBmaWxsLW9wYWNpdHk9JzAnIHN0cm9rZT0nIzhjMjZkMScgc3Ryb2tlLW9wYWNpdHk9JzAuNScgc3Ryb2tlLXdpZHRoPScwLjg1Jy8+Cjwvc3ZnPg==');
+
+}
+.lighterText {
+    color: #777;
+}
+.darkerText {
+    color: #000;
+}
+
+.backcanvas{
+    position:absolute;
+}

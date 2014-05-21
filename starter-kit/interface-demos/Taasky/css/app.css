@@ -1,0 +1,281 @@
+html {
+    background-color: #000;
+    color: #fff;
+    font-family: 'Arial';
+} 
+
+.side-view-button {
+	text-align: center;
+	color: white;
+	font-family: "FontAwesome";
+	font-size: 30px;
+}
+
+.side-view-button.all {
+	background-color: rgba(77, 89, 102, 1);
+}
+
+.side-view-button.home {
+	background-color: rgba(245, 132, 133, 1);
+}
+
+.side-view-button.work {
+	background-color: rgba(254, 197, 130, 1);
+}
+
+.side-view-button.friends {
+	background-color: rgba(202, 152, 236, 1);
+}
+
+.side-view-button.shopping {
+	background-color: rgba(69, 227, 189, 1);
+}
+
+.side-view-button.settings {
+	background-color: rgba(63, 71, 81, 1);
+	color: rgba(159, 162, 169, 1);
+}
+
+.previous {
+	text-align: center;
+	color: rgba(159, 162, 169, 1);
+	font-family: "FontAwesome";
+	font-size: 30px;
+	z-index: 5;
+	padding-top: 10px;
+}
+
+.backing {
+	z-index: 4;
+}
+
+.form {
+	background-color: rgba(77, 89, 102, 1);
+	color: white;
+	z-index: 4;
+	text-align: center;
+	font-family: Helvetica;
+	font-size: 16px;
+	-webkit-appearance: none;
+	border-radius: 0;
+}
+
+input.form {
+	border: none;
+	border-bottom: 1px solid rgba(159, 162, 169, 1);
+}
+
+.colorBar {
+	-moz-backface-visibility: visible;
+	-webkit-backface-visibility: visible; /* Chrome, Safari, Opera */
+	backface-visibility: visible;
+}
+
+.colorBar.home {
+	background-color: rgba(245, 132, 133, 1);
+}
+
+.colorBar.work {
+	background-color: rgba(254, 197, 130, 1);
+}
+
+.colorBar.friends {
+	background-color: rgba(202, 152, 236, 1);
+}
+
+.colorBar.shopping {
+	background-color: rgba(69, 227, 189, 1);	
+}
+
+.dot {
+	width: 50px;
+	height: 100%;
+	line-height: 60px;
+	float: left;
+	text-align: center;
+	font-family: "FontAwesome";
+	display: inline-block;
+}
+
+.category .text {
+	float: left;
+	height: 100%;
+	line-height: 60px;
+	display: inline-block;
+	text-align: left;
+	padding-left: 10px;
+	font-size: 20px;
+}
+
+.category {
+	color: white;
+	font-size: 30px;
+	border-bottom: 1px solid rgba(159, 162, 169, 1);
+}
+
+.category-home .dot {
+	color: rgba(245, 132, 133, 1);
+}
+
+.category-work .dot {
+	color: rgba(254, 197, 130, 1);
+}
+
+.category-friends .dot {
+	color: rgba(202, 152, 236, 1);
+}
+
+.category-shopping .dot {
+	color: rgba(69, 227, 189, 1);	
+}
+
+
+.deleteContainer {
+	padding: 20px;
+}
+
+.deleteButton {
+	width: 100%;
+	height: 60px;
+	line-height: 60px;
+	border-radius: 10px;
+	border: 1px solid rgba(245, 132, 133, 1);
+	z-index: 100;
+}
+
+
+.deleteContainer.touch .deleteButton {
+	background-color: rgba(245, 132, 133, 1);
+	color: rgba(63, 71, 81, 1);
+}
+
+.headerIcon {
+	text-align: center;
+	color: rgba(77, 89, 102, 1);
+	font-family: "FontAwesome";
+	font-size: 30px;
+	z-index: 2;
+}
+
+.newTask {
+	box-sizing: border-box;
+	width: 100%;
+	height: 100px;
+	background-color: rgba(51, 57, 72, 1);
+	color: rgba(159, 162, 169, 1);
+	z-index: 4;
+	text-align: center;
+	font-family: Helvetica;
+	font-size: 16px;
+	-webkit-appearance: none;
+	border-radius: 0;
+	border: none;
+	border-bottom: 1px solid rgba(159, 162, 169, .3);
+}
+
+.bottom > * {
+	height: 100px;
+	float: left;
+	line-height: 100px;
+	box-sizing: border-box;
+}
+
+.fontIcon {
+	text-align: center;
+	color: rgba(159, 162, 169, 1);
+	font-family: "FontAwesome";
+	font-size: 30px;
+}
+
+.newDue {
+	width: 25%;
+	border-right: 1px solid rgba(159, 162, 169, .3);
+}
+
+.newReminder {
+	width: 25%;
+	border-right: 1px solid rgba(159, 162, 169, .3);
+}
+
+.newDot {
+	position: absolute;
+	left: 0;
+	width: 80px;
+	height: 100px;
+	line-height: 100px;
+	text-align: center;
+	font-family: "FontAwesome";
+	color: rgba(202, 152, 236, 1);
+	font-size: 30px;
+}
+
+.newCategory {
+	position: relative;
+	font-size: 20px;
+	box-sizing: border-box;
+	width: 50%;
+	padding-left: 80px;
+	float: left;
+	color: rgba(159, 162, 169, 1);
+}
+
+.task {
+	box-sizing: border-box;
+	background-color: rgba(77, 89, 102, 1);
+	border-right: 20px solid rgba(63, 71, 81, 1);
+	height: 100%;
+}
+
+.task {
+	border-bottom: 1px solid rgba(159, 162, 169, .2);
+}
+
+.task * {
+	box-sizing: border-box;
+}
+
+.task.home {
+	border-right-color: rgba(245, 132, 133, 1);
+}
+
+.task.work {
+	border-right-color: rgba(254, 197, 130, 1);
+}
+
+.task.friends {
+	border-right-color: rgba(202, 152, 236, 1);
+}
+
+.task.shopping {
+	border-right-color: rgba(69, 227, 189, 1);
+}
+
+.due {
+	border-left: 5px solid rgba(245, 132, 133, 1);
+}
+
+.checkbox {
+	float: left;
+	width: 15%;
+	height: 100%;
+	text-align: center;
+	font-family: "FontAwesome";
+	font-size: 30px;
+	background-color: rgba(63, 71, 81, 1);
+	color: rgba(159, 162, 169, 1);
+	line-height: 100px;
+}
+
+.taskData {
+	float: left;
+	height: 100px;
+	width: 80%;
+	line-height: 100px;
+	padding: 0 20px;
+}
+
+.overlay {
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, .3);
+}

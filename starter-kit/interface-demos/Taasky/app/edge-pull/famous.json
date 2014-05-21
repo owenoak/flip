@@ -1,0 +1,11 @@
+{
+  "name": "edge-pull",
+  "main": "edge-pull.js",
+  "dependencies": {
+    "famous/transform": "git+ssh://git@github.com:Famous/famous.git#modularized",
+    "famous/view": "git+ssh://git@github.com:Famous/famous.git#modularized"
+  },
+  "scripts": [
+    "edge-pull.js"
+  ]
+}

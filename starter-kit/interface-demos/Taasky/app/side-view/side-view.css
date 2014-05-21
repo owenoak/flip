@@ -1,0 +1,31 @@
+.side-view-button {
+	text-align: center;
+	color: white;
+	font-family: "FontAwesome";
+	font-size: 30px;
+}
+
+.side-view-button.all {
+	background-color: rgba(77, 89, 102, 1);
+}
+
+.side-view-button.home {
+	background-color: rgba(245, 132, 133, 1);
+}
+
+.side-view-button.work {
+	background-color: rgba(254, 197, 130, 1);
+}
+
+.side-view-button.friends {
+	background-color: rgba(202, 152, 236, 1);
+}
+
+.side-view-button.shopping {
+	background-color: rgba(69, 227, 189, 1);
+}
+
+.side-view-button.settings {
+	background-color: rgba(63, 71, 81, 1);
+	color: rgba(159, 162, 169, 1);
+}

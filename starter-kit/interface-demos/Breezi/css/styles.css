@@ -1,0 +1,15 @@
+html {
+    background-color: #000;
+    color: #fff;
+    font-family: 'Candal', sans-serif;
+    cursor: pointer;
+}
+
+.layer {
+    background-color: #444;
+}
+
+.rotator {
+  -webkit-backface-visibility: visible;
+  backface-visibility: visible;
+}

@@ -1,0 +1,45 @@
+{
+  "name": "main",
+  "version": "0.0.0",
+  "description": "Main App",
+  "dependencies": {
+    "famous/polyfills": "git+ssh://git@github.com:Famous/famous-polyfills.git#master",
+    "famous/engine": "git+ssh://git@github.com:Famous/famous.git#modularized",
+    "famous/surface": "git+ssh://git@github.com:Famous/famous.git#modularized",
+    "famous/modifier": "git+ssh://git@github.com:Famous/famous.git#modularized",
+    "famous/transform": "git+ssh://git@github.com:Famous/famous.git#modularized",
+    "famous/render-node": "git+ssh://git@github.com:Famous/famous.git#modularized",
+    "famous/view": "git+ssh://git@github.com:Famous/famous.git#modularized",
+    "famous/view-sequence": "git+ssh://git@github.com:Famous/famous.git#modularized",
+    "famous/views/scrollview": "git+ssh://git@github.com:Famous/famous-views.git#modularized",
+    "famous/views/header-footer-layout": "git+ssh://git@github.com:Famous/famous-views.git#modularized",
+    "famous/utilities/utility": "git+ssh://git@github.com:Famous/famous-utilities.git#modularized"
+  },
+  "local": [
+    "side-view",
+    "header-view",
+    "task-view",
+    "edit-task-view",
+    "new-task-view",
+    "edge-pull"
+  ],
+  "scripts": [
+    "index.js",
+    "app.js",
+    "default-tasks.js"
+  ],
+  "styles": [
+    "styles.css",
+    "font-awesome.css"
+  ],
+  "images": ["favicon.ico"],
+  "fonts": [
+    "fonts/fontawesome-webfont.eot",
+    "fonts/fontawesome-webfont.svg",
+    "fonts/fontawesome-webfont.ttf",
+    "fonts/fontawesome-webfont.woff",
+    "fonts/FontAwesome.otf"
+  ],
+  "templates": [],
+  "files": []
+}

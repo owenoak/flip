@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="description" content="A free, open source JavaScript framework for creating complex UIs for any screen. 3D layout and physics animation engines. Renders to DOM, Canvas, or WebGL">
+        <title>Famo.us</title>
+
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="icon" type="image/png" href="/favicon.png">
+        
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="../css/famous_styles.css"> 
+    </head>
+
+    <body>
+        <div class="col1" id="doc-container">
+            <div class="col1 pad-l-g1 padt35 padb35">
+    <h1>Positioning, Layout and Sizing</h1>
+
+<p>Layout in Famo.us is managed by <code>Transforms</code> and <code>Modifiers</code>. <code>Transforms</code> 
+encapsulate the <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/transform">CSS3 transform specification</a>, that allow for positioning and orienting in 3D space. While a <code>Transform</code> is a static object, <code>Modifiers</code> encapsulate 
+varying <code>Transforms</code> over time, as well as bundling convenient layout properties like <code>size</code> and <code>origin</code> that we will go over below.</p>
+
+<h2><a name="modifiers">Modifiers</a></h2>
+
+<p>A <code>Modifier</code> is a Famo.us node that can be added to the Render Tree. <code>Modifiers</code> modify all the nodes below them.
+They are defined by holding on to four states: <code>size</code>, <code>transform</code>, <code>origin</code>, and <code>opacity</code>. These correspond to the 
+hardware accelerated properties that Famo.us can change at 60 FPS.</p>
+
+<h2><a name="transform">Transform</a></h2>
+
+<p><code>Transforms</code> are sixteen-element arrays that correspond directly to a CSS3 transformation matrix. This matrix encodes
+a translation, rotation, scale and skew state.</p>
+
+<h5>Transform.Identity</h5>
+
+<p>The default <code>Transform</code> is <code>Transform.identity</code>, which has no effect on layout. It is like multiplying a number by 1.</p>
+
+<p>The identity transform looks like this:</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js">  [1, 0, 0, 0,
+   0, 1, 0, 0,
+   0, 0, 1, 0,
+   0, 0, 0, 1]
+</code></pre></div>
+<h5>Transform.translate(x, y, z)</h5>
+
+<p>The <code>.translate</code> API allows a user to perform a translation in 3D space of the Render Tree below. The translate transform looks like this:</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js">  [1, 0, 0, 0,
+   0, 1, 0, 0,
+   0, 0, 1, 0,
+   x, y, z, 1]
+</code></pre></div>
+<h5>Transform.Scale(x, y, z)</h5>
+
+<p>The <code>.scale</code> API allows a user to scale the Render Tree below. The scale transform looks like this:</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js">  [x, 0, 0, 0,
+   0, y, 0, 0,
+   0, 0, z, 0,
+   0, 0, 0, 1]
+</code></pre></div>
+<h5>Transform.rotateX(radians)</h5>
+
+<p>The x-rotation <code>Transform</code> results in a clockwise-rotation around the x-axis. It looks like</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js">  [1, 0, 0, 0,
+   0, Math.cos(radians), Math.sin(-radians), 0,
+   0, Math.sin(radians), Math.cos(radians), 0,
+   0, 0 , 0, 1]
+</code></pre></div>
+<h5>Transform.rotateY(radians)</h5>
+
+<p>Similarly, the Y rotation transform looks like this:</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js">  [Math.cos(radians), 0, Math.sin(radians), 0,
+   0, 1, 0, 0,
+   Math.sin(radians), 0, Math.cos(radians), 0,
+   0, 0, 0, 1]
+</code></pre></div>
+<h5>Transform.rotateZ(radians)</h5>
+
+<p>Similarly, the Z rotation transform looks like this:</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js">  [Math.cos(radians), Math.sin(-radians), 0, 0,
+   Math.sin(radians), Math.cos(radians), 0, 0,
+   0, 0, 1, 0,
+   0, 0, 0, 1]
+</code></pre></div>
+<h5>Transform.multiply(transformA, transformB)</h5>
+
+<p><code>Transforms</code> can be composed via the multiplication method, which takes two <code>Transforms</code> as arguments. Note: multiplication is not commutative! A translation following by a rotation is not the same as a rotation followed by a translation, for instance.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js">  Transform.multiply(
+    Transform.translate(100,0,0),
+    Transform.rotateZ(Math.PI/4)
+  );
+</code></pre></div>
+<h2><a name="size">Size</a></h2>
+
+<p><code>Size</code> defines a bounding-box for content. Nodes in the Render Tree below sized <code>Modifiers</code> can 
+use this bounding size to lay themselves out. The simplest example being a <code>Surface</code> that takes on the size
+of a parenting <code>Modifier</code> by setting its own <code>size</code> to <code>undefined</code>. In the following example, the created
+surfaces will have a width of 200, which it inherits from the <code>Modifier</code> above it.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js">  var sizeModifier = new Modifier({size : [200,200]});
+  var surface = new Surface({
+    size : [undefined, 100], 
+    properties : {background : &#39;red&#39;}
+  });
+  context.add(sizeModifier).add(surface);
+</code></pre></div>
+<p>Layout views like <code>GridLayout</code> and <code>SequentialLayout</code> often first take in a sized <code>Modifier</code> in order to perform 
+layout relative to some size context.</p>
+
+<p>It is often important for these layout widgets to know the size of the nodes they are responsible for positioning.
+To do so, Famo.us standardizes on a <code>.getSize</code> interface for many of its renderables. For example, a <code>Scrollview</code>
+will position its content sequentially relative to the height (or width) of the sizes of the renderables it
+lays out.</p>
+
+<h2><a name="origin">Origin</a></h2>
+
+<p>Layout is often easily described in terms of &#39;top left, bottom right, etc&#39;. <code>Origin</code> is a way of
+defining an arbitrary positioning relative to a <code>size</code>.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js">    var surface = new Surface({
+        size: [50, 50],
+        properties: {
+            background: &#39;red&#39;
+        },
+    });
+
+    var originModifier = new Modifier({
+        origin: [1, 0.5] //bottom, center
+    });
+
+    var sizeModifier = new Modifier({
+        size: [100, 100]
+    });
+
+    context.add(sizeMod).add(originMod).add(surface);
+</code></pre></div>
+<p>In this example, the <code>surface</code> will be positioned relative to the bottom-middle of the 100 x 100 area defined by the <code>sizeModifier</code>.</p>
+
+<p>To rotate a <code>Surface</code> about its center, you will first have to define the origin of the rotation to be about a [.5,.5] origin.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js">    var surface = new Surface({
+        properties: {
+            background: &#39;red&#39;
+        },
+    });
+
+    var originModifier = new Modifier({
+        origin: [0.5, 0.5] //bottom, center
+    });
+
+    var sizeModifier = new Modifier({
+        size: [50, 50]
+    });
+
+    var rotateModifier = new Modifier({
+        transform : Transform.rotateZ(Math.PI/4)
+    });
+
+    context.add(rotateModifier).add(sizeMod).add(originMod).add(surface);
+</code></pre></div>
+</div>
+
+        </div> 
+    </body>
+</html>

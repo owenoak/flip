@@ -1,0 +1,46 @@
+{
+    "PHQ4": {
+        "id"               : "PHQ4",
+        "name"             : "PHQ4",
+        "developers"       : [ username1, username2 ], // same emails used in famous account.
+        "likes"            : 0,
+        "views"            : 0,
+        "url"              : {{ url }}, // this is an auto filled in field, since we will be hosting these apps on our own servers.
+        "zip"              : {{ famo.us app, unminified. Zip file that contains the entire app. }} 
+        "device_view"      : true,  // either the capptivates themselves could contain their device views, or we could auto place them in device views based on this field. 
+        "description"      : {{ description (markdown) }},
+        "company"          : {{ comany }},
+        "company_website"  : {{ company_website }},
+        "github_url"       : {{ github_url }},
+        "twitter_handle"   : {{ twitter }},
+        "mobile_compatible" : true,
+        "webgl_compatible" : false,
+        "agreed_to_terms"  : true,
+        "published"        : true, // is this visible or not
+        "created_at"       : {{ DATETIME }},
+        "tags"             : [ {{tag}}, {{tag}}, {{tag}}, {{tag}} ], 
+        "images" : {
+            "thumbnail" : {{ url_to_s3: 200px x 200px }},
+            "gallery"   : [ {{ url_to_s3: 600px x 600px }}, {{ url_to_s3: 600px x 600px  }}, {{ url_to_s3: 600px x 600px  }},{{ url_to_s3 }}, {{ url_to_s3 }} ]
+        },
+        "similar_demos"    :  [ {{ unique_id }}, {{ unique_id }} ], // auto created field based on tags. 
+        "related_content"  : [
+            {
+                "title": {{ title }},
+                "description": {{ description }},
+                "url": {{ url }},
+                "images": {
+                    "thumbnail": {{ url_to_s3 }}
+                }
+            },
+            {
+                "title": {{ title }},
+                "description": {{ description }},
+                "url": {{ url }},
+                "images": {
+                    "thumbnail": {{ url_to_s3 }}
+                }
+            }
+         ]
+    }
+}

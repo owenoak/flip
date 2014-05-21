@@ -1,0 +1,7 @@
+.headerIcon {
+	text-align: center;
+	color: rgba(77, 89, 102, 1);
+	font-family: "FontAwesome";
+	font-size: 30px;
+	z-index: 2;
+}

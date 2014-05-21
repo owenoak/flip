@@ -1,0 +1,20 @@
+{
+  "name": "edit-task-view",
+  "main": "edit-task-view.js",
+  "dependencies": {
+    "famous/modifier": "git+ssh://git@github.com:Famous/famous.git#modularized",
+    "famous/surface": "git+ssh://git@github.com:Famous/famous.git#modularized",
+    "famous/transform": "git+ssh://git@github.com:Famous/famous.git#modularized",
+    "famous/view": "git+ssh://git@github.com:Famous/famous.git#modularized",
+    "famous/render-node": "git+ssh://git@github.com:Famous/famous.git#modularized",
+    "famous/views/sequential-layout": "git+ssh://git@github.com:Famous/famous-views.git#modularized",
+    "famous/utilities/utility": "git+ssh://git@github.com:Famous/famous-utilities.git#modularized",
+    "famous/surfaces/input-surface": "git+ssh://git@github.com:Famous/famous-surfaces.git#modularized"
+  },
+  "scripts": [
+    "edit-task-view.js"
+  ],
+  "styles": [
+    "edit-task-view.css"
+  ]
+}
