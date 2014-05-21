@@ -1,11 +1,12 @@
-book{position:absolute;display:block;left:400px;top:50px;width:340px;height:440px;-webkit-perspective:2000px;-moz-perspective:2000px;-ms-perspective:2000px;perspective:2000px;perspective-origin:left center}
+button{font-size:1.5em}
+book{position:absolute;display:block;left:400px;top:100px;width:340px;height:440px;-webkit-perspective:2000px;-moz-perspective:2000px;-ms-perspective:2000px;perspective:2000px;perspective-origin:left center}
 page{position:absolute;left:0;top:0;width:340px;height:440px;-webkit-transform-style:preserve-3d;-moz-transform-style:preserve-3d;-ms-transform-style:preserve-3d;transform-style:preserve-3d;-webkit-transform-origin:left top 0;-moz-transform-origin:left top 0;-ms-transform-origin:left top 0;transform-origin:left top 0;-webkit-transform:rotateY(0deg);-moz-transform:rotateY(0deg);-ms-transform:rotateY(0deg);transform:rotateY(0deg);-webkit-transition:-webkit-transform .5s 0s,z-index .1s .1s;-moz-transition:-moz-transform .5s 0s,z-index .1s .1s;-ms-transition:-ms-transform .5s 0s,z-index .1s .1s;transition:transform .5s 0s,z-index .1s .1s}
 side{display:block;position:absolute;left:0;top:0;width:340px;height:440px;-webkit-background-size:100% 100%;-moz-background-size:100% 100%;-ms-background-size:100% 100%;background-size:100% 100%;-webkit-backface-visibility:hidden;-moz-backface-visibility:hidden;-ms-backface-visibility:hidden;backface-visibility:hidden;-webkit-touch-callout:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
 page.active{box-shadow:0 2px 5px rgba(0,0,0,.25)}
-page.frontCover{display:block!important;box-shadow:2px 2px 8px rgba(0,0,0,.25)}
-page.frontCover.active{box-shadow:2px 2px 8px rgba(0,0,0,.25),0 2px 5px rgba(0,0,0,.25)}
-page.backCover{display:block!important;box-shadow:-2px 2px 8px rgba(0,0,0,.25)}
-page.backCover.active{box-shadow:-2px 2px 8px rgba(0,0,0,.25),0 2px 5px rgba(0,0,0,.25)}
+page.frontCover{display:block!important;box-shadow:2px 2px 8px rgba(0,0,0,.25)!important}
+page.frontCover.active{box-shadow:2px 2px 8px rgba(0,0,0,.25),0 2px 5px rgba(0,0,0,.25)!important}
+page.backCover{display:block!important;box-shadow:-2px 2px 8px rgba(0,0,0,.25)!important}
+page.backCover.active{box-shadow:-2px 2px 8px rgba(0,0,0,.25),0 2px 5px rgba(0,0,0,.25)!important}
 side:after{position:absolute;top:0;width:5%;height:100%;content:' '}
 side.front{z-index:2}
 side.front:after{left:0;background-image:linear-gradient(left,rgba(0,0,0,.1)0,rgba(0,0,0,0)100%);background-image:-moz-linear-gradient(left,rgba(0,0,0,.1)0,rgba(0,0,0,0)100%);background-image:-webkit-linear-gradient(left,rgba(0,0,0,.1)0,rgba(0,0,0,0)100%)}

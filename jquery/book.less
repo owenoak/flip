@@ -74,15 +74,14 @@
 	background-image: -webkit-linear-gradient(@params);
 }
 
-//button {
-//	font-size:2em;
-//	border-radius:.5em;
-//}
+button {
+	font-size:1.5em;
+}
 
 book {
 	position:absolute;
 	display:block;
-	left:400px; top:50px;
+	left:400px; top:100px;
 	width:340px; height:440px;
 	.PERSPECTIVE(2000px);
 	perspective-origin:left center;
@@ -119,16 +118,16 @@ page.active {
 }
 page.frontCover {
 	display:block !important;
-	box-shadow:	@FRONT_COVER_SHADOW;
+	box-shadow:	@FRONT_COVER_SHADOW !important;
 	&.active {
-		box-shadow:	@FRONT_COVER_SHADOW, @ACTIVE_SHADOW;
+		box-shadow:	@FRONT_COVER_SHADOW, @ACTIVE_SHADOW !important;
 	}
 }
 page.backCover {
 	display:block !important;
-	box-shadow:	@BACK_COVER_SHADOW;
+	box-shadow:	@BACK_COVER_SHADOW !important;
 	&.active {
-		box-shadow:	@BACK_COVER_SHADOW, @ACTIVE_SHADOW;
+		box-shadow:	@BACK_COVER_SHADOW, @ACTIVE_SHADOW !important;
 	}
 }
 

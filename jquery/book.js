@@ -36,6 +36,7 @@ Book.prototype = {
 
 		this.createPages();
 		this.showPage();
+		this.initEvents();
 	},
 
 	// Create pages for the book and stick 'em in the body.
@@ -95,12 +96,6 @@ Book.prototype = {
 						+"<side class='p{{backSideName}} back' style='background-image:url({{urlPrefix}}{{backSideName}}.jpg)'></side>"
 				   +"</page>",
 
-
-	animationOptions : {
-		duration : 100,
-		easing : "easeOutCubic"
-	},
-
 	// Show a particular page by manipulating CSS.
 	showPage : function(pageNum) {
 		if (pageNum < 0) pageNum = 0;
@@ -109,22 +104,25 @@ Book.prototype = {
 		var currentPage = this.currentPage;
 		if (pageNum == null) pageNum = currentPage;
 
+		// build up a list of animations that we want to perform
+		var animations = [];
+
 		// going forward in the book
 		if (pageNum > currentPage) {
 			for (var p = currentPage, i = 0; p < pageNum-1; p++, i++) {
-				this._animatePage(p, -181, p, i);
+				animations.push([p, -181, p, i]);
 			}
-			this._animatePage(p, -180, p, i);
+			animations.push([p, -180, p, i]);
 		}
 		// going backward in the book
 		else if (pageNum < currentPage) {
 			for (var p = currentPage, i = 0; p >= pageNum; p--, i++) {
-				var page = this.$pages[p];
-				this._animatePage(p, 0, this.pageCount-p, i);
+				animations.push([p, 0, this.pageCount-p, i]);
 			}
 			// make sure the left-side page is squared up
-			this._animatePage(p, -180, p, i);
+			animations.push([p, -180, p, i]);
 		}
+		this.animatePages(animations);
 
 		this.currentPage = pageNum;
 	},
@@ -145,33 +143,91 @@ Book.prototype = {
 		this.showPage(this.pageCount);
 	},
 
-	PAGE_ANIMATION_DURATION : 500,
-	_animatePage : function(index, rotateY, zIndex, animationIndex) {
-		var promise = $.Deferred();
 
-		var page = this.$pages[index];
-		if (!page) return promise.reject();
+//
+//	animation code
+//
+	// Set this to true to use `requestAnimationFrame` to attempt to synchronize the animations.
+	// Otherwise we'll do our own looping...
+	USE_REQUEST_ANIMATION_FRAME : false,
 
-		var $page = $(page);
-		var delay = (animationIndex || 0) * 20;
-		setTimeout(function() {
-			$page.show()
-//				 .addClass("active")
-				 .css({"transform":"rotateY("+rotateY+"deg)", "zIndex":zIndex});
+	// Animate a bunch of page flipping.
+	animatePages : function(list) {
+		if (this.USE_REQUEST_ANIMATION_FRAME) {
+			this.animateWithRequestAnimationFrame(list);
+		} else {
+			this.animateWithTimers(list);
+		}
+	},
 
+	// Animate using a recursive call to `requestAnimationFrame`.
+	animateWithRequestAnimationFrame : function(list) {
+		console.debug("using 'requestAnimationFrame()'");
+		var book = this;
+		function doit() {
+			var args = list.shift();
+			if (!args) return;
+			requestAnimationFrame(doit);
+			book._animatePageNow.apply(book, args);
+		}
+		requestAnimationFrame(doit);
+	},
+
+	// Animate using timers to spread the animations apart
+	ANIMATION_TIMER_DELAY : 1000/60,
+	ANIMATION_DURATION : 400,
+	animateWithTimers : function(list) {
+		console.debug("using timers");
+		var book = this;
+		// start moving each page after an increasing delay so we see the fan-out
+		list.forEach(function(args) {
+			var index = args[0];
+			var delay = (args[3] || 0) * book.ANIMATION_TIMER_DELAY;
 			setTimeout(function() {
-//				$page.removeClass("active");
-				promise.resolve();
-			}, this.PAGE_ANIMATION_DURATION);
-		}.bind(this), delay);
-		return promise;
+				book._animatePageNow.apply(book, args);
+			}, delay);
+		});
+	},
+
+	// Actually perform one page animation.
+	_animatePageNow : function(index, rotateY, zIndex, animationIndex) {
+		var page = this.$pages[index];
+		if (!page) return;
+		$(page).css({"transform":"rotateY("+rotateY+"deg)", "zIndex":zIndex, "display":"block"});
+	},
+
+//
+// event handling
+//
+
+	initEvents : function() {
+		// eat body touch events on mobile if in catalog view
+		//	- this prevents annoying drag up/down bounce behavior
+		//	- unfortunately, it also prevents pinch
+		$("body").on('touchmove', function (event) {
+			event.preventDefault();
+		});
+
+		// switch pages when they swipe in the book
+		this.$book.on("swipe", this.onSwipe.bind(this));
+
+		this.$rafCheckbox = $("input#RAF");
+		this.$rafCheckbox.prop("checked", false);
+		this.$rafCheckbox.on("change", function(event){
+			this.USE_REQUEST_ANIMATION_FRAME = this.$rafCheckbox.prop("checked");
+		}.bind(this));
+	},
+
+	onSwipe : function(event) {
+		if (event.direction === "left") {
+			this.showNextPage();
+		} else if (event.direction === "right") {
+			this.showPrevPage();
+		}
+		event.preventDefault();
 	},
 
 
-	// Return a page specified by 0-based index.
-	get$page : function(pageNum) {
-		return $("page.pp"+pageNum);
-	}
 
 };	// end Book()
 

@@ -1,5 +1,17 @@
 /* Native browser extensions */
 
+// make sure window.requestAnimationFrame is set up
+window.requestAnimationFrame = (function(){
+  return  window.requestAnimationFrame       ||
+          window.webkitRequestAnimationFrame ||
+          window.mozRequestAnimationFrame    ||
+          function( callback ){
+            window.setTimeout(callback, 1000 / 60);
+          };
+})();
+
+
+// String extensions.
 $.extend(String.prototype, {
 	// Expand some HTML given a scope object
 	//	eg:		"abc{{foo}}def".expand({foo:"BAR"}) =>  "abcBARdef"

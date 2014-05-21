@@ -1,23 +1,26 @@
 <html class=''>
 <head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" />
 	<link type="text/css" rel="stylesheet" href="book.css">
 	<script src="lib/jquery.min.js"></script>
 	<script src="lib/jquery-ui-1.10.4/js/jquery-ui-1.10.4.custom.min.js"></script>
 	<script src="lib/jquery.transition.js/jquery.transition.js"></script>
 	<script src="lib/jquery.transform.js/jquery.transform2d.js"></script>
 	<script src="lib/jquery.transform.js/jquery.transform3d.js"></script>
+	<script src="lib/toe.min.js"></script>
 	<script src="Browser.js"></script>
 		<script src="$.js"></script>
 	<script src="native.js"></script>
 </head>
 <body>
-	<button onclick='book.showFrontCover()'>Front</button>
-	<button onclick='book.showPrevPage()'>Prev</button>
-	<button onclick='book.showNextPage()'>Next</button>
-	<button onclick='book.showBackCover()'>Back</button>
+	<button onmousedown='book.showFrontCover()'>Front</button>
+	<button onmousedown='book.showPrevPage()'>Prev</button>
+	<button onmousedown='book.showNextPage()'>Next</button>
+	<button onmousedown='book.showBackCover()'>Back</button>
+	<label><input type='checkbox' id='RAF'>Use request animation frame</label>
 <!--
-	<button onclick='$("body").setClass("fan1")'>Fan 1</button>
-	<button onclick='$("body").setClass("fan2")'>Fan 2</button>
+	<button onmousedown='$("body").setClass("fan1")'>Fan 1</button>
+	<button onmousedown='$("body").setClass("fan2")'>Fan 2</button>
 -->
 	<script src="book.js"></script>
 </body>
