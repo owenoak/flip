@@ -72,22 +72,24 @@ define(function(require, exports, module) {
 	PVP.currentPage = 0;
 	PVP.showPage = function(pageNum) {
 		if (pageNum < 0) pageNum = 0;
-		if (pageNum >= this.pageCount) pageNum = this.pageCount-1;
+		if (pageNum >= this.pageCount) pageNum = this.pageCount;
 
 		var currentPage = this.currentPage;
-console.info(pageNum, currentPage);
 		if (pageNum > currentPage) {
-			for (var p = currentPage, i = 0; p <= pageNum; p++, i++) {
-console.warn("forward", p, ":", this.pages[p]);
-				this.pages[p].flipForward(i*20);
+console.warn("forward", pageNum, currentPage);
+			for (var p = currentPage, i = 0; p < pageNum; p++, i++) {
+				var page = this.pages[p];
+				if (page) page.flipForward(i*20);
 			}
-		} else {
+		} else if (pageNum < currentPage) {
+console.warn("back", pageNum, currentPage);
 			for (var p = currentPage, i = 0; p >= pageNum; p--, i++) {
-console.warn("back", p, ":", this.pages[p]);
-				this.pages[p].flipBack(i*20);
+				var page = this.pages[p];
+				if (page) page.flipBack(i*20);
 			}
 		}
-		this.currentPage = pageNum;
+		this.currentPage = Math.max(0, Math.min(pageNum, this.pageCount));
+//console.info(this.currentPage);
 	};
 
 	PVP.showNextPage = function() {

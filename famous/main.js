@@ -3,9 +3,28 @@ define(function(require, exports, module) {
 	// Cheat and assign global vars for the famo.us bits here so we don't have to load them in each
 	var Engine  = require('famous/core/Engine');
 	var Utility = require('famous/utilities/Utility');
+	var HeaderFooterLayout = require("famous/views/HeaderFooterLayout");
+	var Surface = require('famous/core/Surface');
+	var StateModifier = require('famous/modifiers/StateModifier');
 
 	var mainContext = Engine.createContext();
     mainContext.setPerspective(5000);
+
+
+	// header/footer layout to add a toolbar
+	var layout = new HeaderFooterLayout({
+		headerSize:60,
+	});
+	var HeaderView  = require('HeaderView');
+	var header = new HeaderView();
+	var headerSizer = new StateModifier({
+		origin:[0,0],
+		align:[0.05,0.1],
+		size : [500,60]
+	});
+
+	layout.header.add(headerSizer).add(header);
+
 
 /*
 	// Test one page
@@ -23,7 +42,12 @@ define(function(require, exports, module) {
 		project 	: "bebe/May2014",
 		sideCount	: 50
 	});
-	console.warn(book.sideCount);
-	mainContext.add(book);
+	var bookSizer = new StateModifier({
+		origin:[0.05,0],
+		align:[0.05,0.1]
+	});
+	layout.content.add(bookSizer).add(book);
+
+	mainContext.add(layout);
 
 });
