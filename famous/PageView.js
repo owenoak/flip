@@ -59,6 +59,7 @@ define(function(require, exports, module) {
 				boxShadow 	: (this.options.showShadow ? "2px 2px 8px rgba(0, 0, 0, 0.25)" : "none")
 			}
 		});
+		this.front.pipe(this._eventOutput);
 
 		this.back  = new ImageSurface({
 			content : this.options.backUrl,
@@ -66,6 +67,7 @@ define(function(require, exports, module) {
 				boxShadow 	: (this.options.showShadow ? "2px 2px 8px rgba(0, 0, 0, 0.25)" : "none")
 			}
 		});
+		this.back.pipe(this._eventOutput);
 
 		// flip the back image round
 		var backFlipper = new StateModifier({

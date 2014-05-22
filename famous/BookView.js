@@ -10,6 +10,13 @@ define(function(require, exports, module) {
 	var ImageSurface = require('famous/surfaces/ImageSurface');
 	var ContainerSurface = require('famous/surfaces/ContainerSurface');
 
+	// touch event support
+    var GenericSync     = require('famous/inputs/GenericSync');
+	var MouseSync       = require('famous/inputs/MouseSync');
+    var TouchSync       = require('famous/inputs/TouchSync');
+    GenericSync.register({mouse: MouseSync});
+    GenericSync.register({touch: TouchSync});
+
 	// native extensions
 	var native = require('native');
 	var PageView = require('PageView');
@@ -17,12 +24,13 @@ define(function(require, exports, module) {
 
 	function BookView() {
 		View.apply(this, arguments);
+		this._initTouch();
 		this._initViews();
 	}
 
 	// Establishes prototype chain for BookView class to inherit from View
-	var PVP = BookView.prototype = Object.create(View.prototype);
-	PVP.constructor = BookView;
+	var BVP = BookView.prototype = Object.create(View.prototype);
+	BVP.constructor = BookView;
 
 	// Default options for BookView class
 	BookView.DEFAULT_OPTIONS = {
@@ -32,7 +40,7 @@ define(function(require, exports, module) {
 
 
 	// Initialize each of our page children
-	PVP._initViews = function() {
+	BVP._initViews = function() {
 		if (this.options.sideCount == null) throw "You must provide `options.pageCount`";
 		if (this.options.project == null) throw "You must provide `options.project`";
 
@@ -65,12 +73,16 @@ define(function(require, exports, module) {
 			var page = new PageView(pageOptions);
 			this.pages.push(page);
 
+//			page.on("click", function(){alert(1)});
+			page.pipe(this.sync);
+
 			this.mainNode.add(page);
 		}
+
 	}
 
-	PVP.currentPage = 0;
-	PVP.showPage = function(pageNum) {
+	BVP.currentPage = 0;
+	BVP.showPage = function(pageNum) {
 		if (pageNum < 0) pageNum = 0;
 		if (pageNum >= this.pageCount) pageNum = this.pageCount;
 
@@ -92,24 +104,51 @@ console.warn("back", pageNum, currentPage);
 //console.info(this.currentPage);
 	};
 
-	PVP.showNextPage = function() {
+	BVP.showNextPage = function() {
 		this.showPage(this.currentPage + 1);
 	};
 
-	PVP.showPrevPage = function() {
+	BVP.showPrevPage = function() {
 		this.showPage(this.currentPage - 1);
 	};
 
-	PVP.showFrontCover = function() {
+	BVP.showFrontCover = function() {
 		this.showPage(0);
 	};
 
-	PVP.showBackCover = function() {
+	BVP.showBackCover = function() {
 		this.showPage(this.pageCount);
 	};
 
+//
+//	events
+//
+    BVP._initTouch = function() {
+        GenericSync.register(MouseSync);
+        this.sync = new GenericSync(['mouse', 'touch'], {direction: GenericSync.DIRECTION_X});
+
+        this.sync.on('update', function(data) {
+        	if (this.alreadySwiped) return;
+        	this.alreadySwiped = true;
+
+			console.log("update",data);
+			var delta = data.delta;
+			if (delta < 0) {
+				this.showNextPage();
+			} else {
+				this.showPrevPage();
+			}
+        }.bind(this));
+
+        this.sync.on('end', (function(data) {
+        	this.alreadySwiped = false;
+			//console.log("end",data);
+        }).bind(this));
+    }
+
+
 	// debug
-	PVP.toString = function() {
+	BVP.toString = function() {
 		return "[BookView "+this.project+"]";
 	}
 

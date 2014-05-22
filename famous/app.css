@@ -27,3 +27,7 @@ body {
 	cursor:pointer;
 	text-align:center;
 }
+
+img {
+/*	pointer-events:none;	*/
+}
