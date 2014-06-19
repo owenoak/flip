@@ -39,7 +39,7 @@ define(function(require, exports, module) {
 	};
 
 
-	// Initialize each of our page children
+	// Create pages and add them.
 	BVP._initViews = function() {
 		if (this.options.sideCount == null) throw "You must provide `options.pageCount`";
 		if (this.options.project == null) throw "You must provide `options.project`";
@@ -48,8 +48,8 @@ define(function(require, exports, module) {
 
 		// add a StateModifier for flipping this page around its center axis (just for testing)
 		this.positioner = new StateModifier({
-			origin  : [0, 0],
-			align	: [0, 0],
+			origin  : [0.5, 0],
+			align	: [0.5, 0.1],
 			size	: [660, 440]
 		});
 		this.mainNode = this.add(this.positioner);
@@ -81,20 +81,23 @@ define(function(require, exports, module) {
 
 	}
 
+	// current page we're displaying
 	BVP.currentPage = 0;
+
+	// show a particular page by page number
 	BVP.showPage = function(pageNum) {
 		if (pageNum < 0) pageNum = 0;
 		if (pageNum >= this.pageCount) pageNum = this.pageCount;
 
 		var currentPage = this.currentPage;
 		if (pageNum > currentPage) {
-console.warn("forward", pageNum, currentPage);
+			console.warn("forward", pageNum, currentPage);
 			for (var p = currentPage, i = 0; p < pageNum; p++, i++) {
 				var page = this.pages[p];
 				if (page) page.flipForward(i*20);
 			}
 		} else if (pageNum < currentPage) {
-console.warn("back", pageNum, currentPage);
+			console.warn("back", pageNum, currentPage);
 			for (var p = currentPage, i = 0; p >= pageNum; p--, i++) {
 				var page = this.pages[p];
 				if (page) page.flipBack(i*20);
@@ -104,18 +107,22 @@ console.warn("back", pageNum, currentPage);
 //console.info(this.currentPage);
 	};
 
+	// Forward one page.
 	BVP.showNextPage = function() {
 		this.showPage(this.currentPage + 1);
 	};
 
+	// Back one page.
 	BVP.showPrevPage = function() {
 		this.showPage(this.currentPage - 1);
 	};
 
+	// Front of the book.
 	BVP.showFrontCover = function() {
 		this.showPage(0);
 	};
 
+	// Back of the book.
 	BVP.showBackCover = function() {
 		this.showPage(this.pageCount);
 	};
@@ -123,6 +130,8 @@ console.warn("back", pageNum, currentPage);
 //
 //	events
 //
+
+	// Handle touch events to advance/go back.
     BVP._initTouch = function() {
         GenericSync.register(MouseSync);
         this.sync = new GenericSync(['mouse', 'touch'], {direction: GenericSync.DIRECTION_X});

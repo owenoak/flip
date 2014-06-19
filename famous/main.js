@@ -8,19 +8,18 @@ define(function(require, exports, module) {
 	var StateModifier = require('famous/modifiers/StateModifier');
 
 	var mainContext = Engine.createContext();
-    mainContext.setPerspective(5000);
-
+    mainContext.setPerspective(1000);
 
 	// header/footer layout to add a toolbar
 	var layout = new HeaderFooterLayout({
-		headerSize:60,
+		headerSize:80,
 	});
 	var HeaderView  = require('HeaderView');
 	var header = new HeaderView();
 	var headerSizer = new StateModifier({
 		origin:[0,0],
 		align:[0.05,0.1],
-		size : [500,60]
+		size : [500,80]
 	});
 
 	layout.header.add(headerSizer).add(header);
@@ -43,10 +42,10 @@ define(function(require, exports, module) {
 		sideCount	: 50
 	});
 	var bookSizer = new StateModifier({
-		origin:[0.05,0],
-		align:[0.05,0.1]
+		origin:[0,0],
+		align:[0.5,0.1]
 	});
-	layout.content.add(bookSizer).add(book);
+	layout.content.add(book);
 
 	mainContext.add(layout);
 

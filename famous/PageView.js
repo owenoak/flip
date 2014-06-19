@@ -53,21 +53,21 @@ define(function(require, exports, module) {
 		if (this.options.frontUrl == null) throw "You must provide `options.frontUrl`.";
 		if (this.options.backUrl == null) throw "You must provide `options.backUrl`.";
 
+		// Front page image.
 		this.front = new ImageSurface({
 			content:this.options.frontUrl,
 			properties : {
 				boxShadow 	: (this.options.showShadow ? "2px 2px 8px rgba(0, 0, 0, 0.25)" : "none")
 			}
 		});
-		this.front.pipe(this._eventOutput);
 
+		// Back page image.
 		this.back  = new ImageSurface({
 			content : this.options.backUrl,
 			properties : {
 				boxShadow 	: (this.options.showShadow ? "2px 2px 8px rgba(0, 0, 0, 0.25)" : "none")
 			}
 		});
-		this.back.pipe(this._eventOutput);
 
 		// flip the back image round
 		var backFlipper = new StateModifier({
@@ -93,7 +93,7 @@ define(function(require, exports, module) {
 				//	so other things will be above us.
 				var zIndex = (angle < this.options.flipSwitchAngle ? this.options.pageNumber : this.options.zIndex);
 
-				return Transform.thenMove(Transform.rotateY(angle),  [0, 0, zIndex])
+				return Transform.thenMove(Transform.rotateY(angle),  [0, 0, zIndex/1000])
 			}.bind(this)
 		});
 
@@ -106,23 +106,31 @@ define(function(require, exports, module) {
 		// set up event handlers
 		this.front.on("click", this.onFrontClick.bind(this));
 		this.back.on("click", this.onBackClick.bind(this));
+
+		// pipe events to the book for touch events
+		this.front.pipe(this._eventOutput);
+		this.back.pipe(this._eventOutput);
 	}
 
 
+	// Toggle flip back and forth.
 	PVP.isFlipped = false;
 	PVP.flip = function() {
 		if (this.isFlipped) 	this.flipBack();
 		else					this.flipForward();
 	}
 
+	// Flip forward in the book, showing the back side of the page.
 	PVP.flipForward = function(delay) {
 		this._flip(this.options.flipEndAngle, true, delay);
 	}
 
+	// Flip backward in the book, showing the front side of the page.
 	PVP.flipBack = function(delay) {
 		this._flip(this.options.flipStartAngle, false, delay);
 	}
 
+	// Do a flip, with an optional delay.
 	PVP._flip = function(angle, isFlipped, delay) {
 		if (delay) {
 			setTimeout(this._flipNow.bind(this, angle, isFlipped), delay);
@@ -131,15 +139,19 @@ define(function(require, exports, module) {
 		}
 	}
 
+	// Root code to actually flip in the moment.
 	PVP._flipNow = function(angle, isFlipped) {
 		// by updating the angle, on the next tick the page will start flipping
 		this._angle.set( angle, { duration: this.options.flipDuration, curve: this.options.flipCurve });
 		this.isFlipped = isFlipped;
 	}
 
+	// Click on front page side.
 	PVP.onFrontClick = function() {
 		this.flipForward();
 	}
+
+	// Click on back side.
 	PVP.onBackClick = function() {
 		this.flipBack();
 	}
